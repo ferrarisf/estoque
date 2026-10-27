@@ -14,5 +14,18 @@ p2.codigo = 55765685
 p2.preco = 29.99
 p2.tipo = "De Sol"
 
-print(f"{p1.nome}: {p1.quantidade}: {p1.codigo}: {p1.preco}: {p1.tipo} un.")
-print(f"{p2.nome}: {p2.quantidade}: {p2.codigo}: {p2.preco}: {p2.tipo} un.")
+print(p1.listar_produtos())
+print(p2.listar_produtos())
+
+p1.entrada(30)
+print(p1.listar_produtos())
+
+p1.saida(15)
+print(p1.listar_produtos())
+
+if p1.saida(100):
+    print("saida registrada")
+else:
+    print("saida recusada")
+
+    print(p1.quantidade)
