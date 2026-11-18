@@ -60,3 +60,32 @@ class SolicitacaoCompra:
         self._registrar(usuario.matricula, "Aprovada")
 
         return None
+        # Reprova a solicitação pelo supervisor responsável
+    def reprovar(self, usuario, motivo):
+        if not usuario.pode("aprovar_pedido") or usuario.matricula != self.supervisor:
+            return "Só o supervisor desta solicitação pode reprová-la."
+
+        if self.status != AGUARDANDO:
+            return "Só dá para reprovar o que está aguardando aprovação."
+
+        if motivo.strip() == "":
+            return "Informe o motivo da reprovação."
+
+        self.status = REPROVADO
+        self._registrar(usuario.matricula, motivo)
+
+        return None
+        # Avança a solicitação para a próxima etapa
+    def avancar(self, usuario):
+        if not usuario.pode("andamento_pedido"):
+            return "Só o almoxarifado mexe no andamento da compra."
+
+        if self.status not in ANDAMENTO or self.status == ENTREGUE:
+            return "Esta solicitação não está em andamento."
+
+        posicao = ANDAMENTO.index(self.status)
+        self.status = ANDAMENTO[posicao + 1]
+
+        self._registrar(usuario.matricula, "Etapa concluída")
+
+        return None
